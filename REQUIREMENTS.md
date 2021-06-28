@@ -493,8 +493,8 @@ CREATE TABLE products(
   id SERIAL PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
   description VARCHAR(255),
-  price NUMERIC(17,2)  NOT NULL,
-  category VARCHAR(50) NOT NULL,
+  price NUMERIC(17, 2) NOT NULL, /* Limit price to 15 digits before decimal, and two after. */
+  category VARCHAR(50) NOT NULL
 );
 ```
 
@@ -518,8 +518,7 @@ CREATE TABLE users(
 CREATE TABLE orders(
   id SERIAL PRIMARY KEY,
   status VARCHAR(50),
-  user_id VARCHAR(255),
-  CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
+  user_id BIGINT REFERENCES users(id) NOT Null
 );
 ```
 
@@ -528,10 +527,8 @@ CREATE TABLE orders(
 ```sql
 CREATE TABLE order_products(
   id SERIAL PRIMARY KEY,
-  order_id INT,
-  CONSTRAINT fk_order_id FOREIGN KEY(order_id) REFERENCES orders(id),
-  product_id INT,
-  CONSTRAINT fk_product_id FOREIGN KEY(product_id) REFERENCES products(id),
+  order_id BIGINT REFERENCES orders(id) NOT NULL,
+  product_id BIGINT REFERENCES products(id) NOT NULL,
   quantity INT
 );
 ```
