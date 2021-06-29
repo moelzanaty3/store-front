@@ -39,15 +39,21 @@ ___Table of Contents___
   - Response Body -- `Array of user objects`
 
     ```json
-      [
-        {
-          id: 1,
-          userName: 'mohammed elzanaty',
-          firstName: 'mohammed',
-          lastName: 'elzanaty',
-          password: 'hashed password'
-        }
-      ]
+      {
+        "status": "success",
+        "data": {
+          "users": [
+            {
+              "id": 1,
+              "email": "mo@elzanaty.com",
+              "userName": "mohammedelzanaty",
+              "firstName": "Mohammed",
+              "lastName": "Elzanaty"
+            }
+          ]
+        },
+        "message": "users retrieved successfully"
+      }
     ```
 
 - Show **`token required`**
@@ -63,11 +69,17 @@ ___Table of Contents___
 
     ```json
         {
-          id: 1,
-          userName: 'mohammed elzanaty',
-          firstName: 'mohammed',
-          lastName: 'elzanaty',
-          password: 'hashed password'
+          "status": "success",
+          "data": {
+            "user": {
+              "id": 1,
+              "email": "mo@elzanaty.com",
+              "userName": "mohammedelzanaty",
+              "firstName": "Mohammed",
+              "lastName": "Elzanaty"
+            }
+          },
+          "message": "user retrieved successfully"
         }
     ```
 
@@ -78,23 +90,29 @@ ___Table of Contents___
 
     ```json
       {
-          userName: 'mohammed elzanaty',
-          firstName: 'mohammed',
-          lastName: 'elzanaty',
-          password: 'password'
+        "email": "test@test.com",
+        "userName": "testuser",
+        "firstName": "Test",
+        "lastName": "User",
+        "password": "test123"
       }
     ```
 
   - Response Body -- `User object`
 
     ```json
-        {
-          id: 1,
-          userName: 'mohammed elzanaty',
-          firstName: 'mohammed',
-          lastName: 'elzanaty',
-          password: 'hashed password'
-        }
+      {
+        "status": "success",
+        "data": {
+          "id": 1,
+          "email": "test@test.com",
+          "userName": "testuser",
+          "firstName": "Test",
+          "lastName": "User",
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJ1c2VyTmFtZSI6InRlc3R1c2VyIiwiZmlyc3ROYW1lIjoiVGVzdCIsImxhc3ROYW1lIjoiVXNlciJ9LCJpYXQiOjE2MjUwMDAyNTB9.y45Rlb9_olQIZpTHzFMH5fHK_coRlzcEuXQC2FXtCBY"
+        },
+        "message": "user created successfully"
+      }
     ```
 
 - Delete **`token required`**
@@ -109,35 +127,53 @@ ___Table of Contents___
   - Response Body -- `Deleted User object`
 
     ```json
-        {
-          id: 1,
-          userName: 'mohammed elzanaty',
-          firstName: 'mohammed',
-          lastName: 'elzanaty'
-        }
+      {
+        "status": "success",
+        "data": {
+          "user": {
+            "id": 2,
+            "email": "test@test.com",
+            "userName": "testuser",
+            "firstName": "Test",
+            "lastName": "User"
+          }
+        },
+        "message": "user deleted successfully"
+      }
     ```
 
 - Edit **`token required`**
-  - HTTP verb `PUT`
+  - HTTP verb `PATCH`
   - Endpoint:- `/api/users/:id`
   - Request Body
 
     ```json
       {
-          firstName: 'Mohammed',
-          lastName: 'Elzanaty'
+        "id": 1,
+        "email": "mo@elzanaty.com",
+        "userName": "mohammedelzanaty",
+        "firstName": "Mohammed",
+        "lastName": "Elzanaty",
+        "password": "test123"
       }
     ```
 
   - Response Body -- `Updated User object`
 
     ```json
-        {
-          id: 1,
-          userName: 'mohammed elzanaty',
-          firstName: 'Mohammed',
-          lastName: 'Elzanaty'
-        }
+      {
+        "status": "success",
+        "data": {
+          "user": {
+            "id": 1,
+            "email": "mo@elzanaty.com",
+            "userName": "mohammedelzanaty",
+            "firstName": "Mohammed",
+            "lastName": "Elzanaty"
+          }
+        },
+        "message": "user updated successfully"
+      }
     ```
 
 - Authenticate
@@ -147,21 +183,26 @@ ___Table of Contents___
 
     ```json
       {
-          userName: 'mohammed elzanaty',
-          password: 'password'
+        "userName": "mohammedelzanaty",
+        "password": "test123"
       }
     ```
 
   - Response Body -- `Updated User object`
 
     ```json
-        {
-          id: 1,
-          userName: 'mohammed elzanaty',
-          firstName: 'Mohammed',
-          lastName: 'Elzanaty',
-          token: 'jwt-token'
-        }
+      {
+        "status": "success",
+        "data": {
+          "id": 1,
+          "email": "mo@elzanaty.com",
+          "userName": "mohammedelzanaty",
+          "firstName": "Mohammed",
+          "lastName": "Elzanaty",
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJlbWFpbCI6Im1vQGVsemFuYXR5LmNvbSIsInVzZXJOYW1lIjoibW9oYW1tZWRlbHphbmF0eSIsImZpcnN0TmFtZSI6Ik1vaGFtbWVkIiwibGFzdE5hbWUiOiJFbHphbmF0eSJ9LCJpYXQiOjE2MjUwMDExMDB9.ubpj0l9VSl2Hd-KlHRqqO3-PmSf0VAySY2qnJ1N_S2Y"
+        },
+        "message": "user authenticated successfully"
+      }
     ```
 
 ### Products

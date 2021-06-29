@@ -39,7 +39,7 @@ class UserModel {
       connection.release();
       return this.formatUser(result.rows[0]);
     } catch (error) {
-      throw new Error(`Unable to create user (${u.userName}): ${error.message}`);
+      throw new Error(`Unable to create (${u.userName}): ${error.message}`);
     }
   }
 
