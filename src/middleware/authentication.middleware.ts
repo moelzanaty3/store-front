@@ -10,7 +10,7 @@ const validateTokenMiddleware = (req: Request, _res: Response, next: NextFunctio
       const bearer = authHeader.split(' ')[0].toLowerCase();
       const token = authHeader.split(' ')[1];
       if (token && bearer === 'bearer') {
-        const decoded = jwt.verify(token, config.tokenSecret as string);
+        const decoded = jwt.verify(token, config.tokenSecret as unknown as string);
         if (decoded) {
           next();
         }

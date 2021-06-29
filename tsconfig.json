@@ -16,7 +16,7 @@
   },
   "include": [
     "./src"
-  ],
+, "src/helpers/reporter.ts"  ],
   "exclude": [
     "node_modules",
     "spec",

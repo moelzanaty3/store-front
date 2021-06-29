@@ -21,6 +21,7 @@ ___Table of Contents___
     - [Product](#product)
     - [User](#user)
     - [Order](#order)
+    - [Order Product](#order-product)
 
 ## API Endpoints
 
@@ -44,8 +45,7 @@ ___Table of Contents___
           userName: 'mohammed elzanaty',
           firstName: 'mohammed',
           lastName: 'elzanaty',
-          password: 'hashed password',
-          superUser: false
+          password: 'hashed password'
         }
       ]
     ```
@@ -67,8 +67,7 @@ ___Table of Contents___
           userName: 'mohammed elzanaty',
           firstName: 'mohammed',
           lastName: 'elzanaty',
-          password: 'hashed password',
-          superUser: false
+          password: 'hashed password'
         }
     ```
 
@@ -82,8 +81,7 @@ ___Table of Contents___
           userName: 'mohammed elzanaty',
           firstName: 'mohammed',
           lastName: 'elzanaty',
-          password: 'password',
-          superUser: false
+          password: 'password'
       }
     ```
 
@@ -95,8 +93,7 @@ ___Table of Contents___
           userName: 'mohammed elzanaty',
           firstName: 'mohammed',
           lastName: 'elzanaty',
-          password: 'hashed password',
-          superUser: false
+          password: 'hashed password'
         }
     ```
 
@@ -116,8 +113,7 @@ ___Table of Contents___
           id: 1,
           userName: 'mohammed elzanaty',
           firstName: 'mohammed',
-          lastName: 'elzanaty',
-          superUser: false
+          lastName: 'elzanaty'
         }
     ```
 
@@ -129,8 +125,7 @@ ___Table of Contents___
     ```json
       {
           firstName: 'Mohammed',
-          lastName: 'Elzanaty',
-          superUser: true
+          lastName: 'Elzanaty'
       }
     ```
 
@@ -141,8 +136,7 @@ ___Table of Contents___
           id: 1,
           userName: 'mohammed elzanaty',
           firstName: 'Mohammed',
-          lastName: 'Elzanaty',
-          superUser: true
+          lastName: 'Elzanaty'
         }
     ```
 
@@ -166,7 +160,6 @@ ___Table of Contents___
           userName: 'mohammed elzanaty',
           firstName: 'Mohammed',
           lastName: 'Elzanaty',
-          superUser: true,
           token: 'jwt-token'
         }
     ```
@@ -427,7 +420,7 @@ ___Table of Contents___
         }
     ```
 
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- [OPTIONAL] Completed Orders by user [args: user id](token required)
 
 ### Order Products
 
@@ -483,6 +476,9 @@ ___Table of Contents___
       ]
     ```
 
+- Edit - **`token required`**
+
+- Delete - **`token required`**
 
 ## Data Schema
 
@@ -504,11 +500,10 @@ CREATE TABLE products(
 CREATE TABLE users(
   id SERIAL PRIMARY KEY,
   email VARCHAR(50) UNIQUE,
-  userName VARCHAR(50) NOT NULL,
-  firstName VARCHAR(50) NOT NULL,
-  lastName VARCHAR(50) NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  superUser BOOLEAN DEFAULT FALSE
+  username VARCHAR(50) NOT NULL,
+  firstname VARCHAR(50) NOT NULL,
+  lastname VARCHAR(50) NOT NULL,
+  password VARCHAR(255) NOT NULL
 );
 ```
 
@@ -539,25 +534,24 @@ CREATE TABLE order_products(
 
 ```typescript
 type Product = {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   price: number;
-  category?: string;
-}
+  category: string;
+};
 ```
 
 ### User
 
 ```typescript
 type User = {
-  id: number;
+  id?: number;
   email: string;
   userName: string;
   firstName: string;
   lastName: string;
-  password: string;
-  superUser: boolean;
+  password?: string;
 }
 ```
 
@@ -565,13 +559,24 @@ type User = {
 
 ```typescript
 type Order = {
-  id: number;
+  id?: number;
   // status of order (active or complete)
   status: string; 
   user_id: string;
   // quantity of each product in the order 
   // id of each product in the order
   // => [{ product_id: number, quantity: number }]
-  products: Array; 
+  products: OrderProduct[]; 
 }
+```
+
+### Order Product
+
+```typescript
+type OrderProduct = {
+  id?: number;
+  quantity: number;
+  order_id: number;
+  product_id: number;
+};
 ```
