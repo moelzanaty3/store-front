@@ -18,8 +18,8 @@ ___Table of Contents___
     - [Orders Schema](#orders-schema)
     - [Products for each Order Schema](#products-for-each-order-schema)
   - [Data Shapes](#data-shapes)
-    - [Product](#product)
     - [User](#user)
+    - [Product](#product)
     - [Order](#order)
     - [Order Product](#order-product)
 
@@ -219,15 +219,21 @@ ___Table of Contents___
   - Response Body -- `Array of products`
 
     ```json
-      [
-        {
-          id: 1,
-          name: 'product name',
-          description: 'product description',
-          price: 10.2,
-          category: 'electronics',
-        }
-      ]
+     {
+        "status": "success",
+        "data": {
+          "products": [
+            {
+              "id": 1,
+              "name": "product name",
+              "description": "product description",
+              "price": 20,
+              "category": "Electronics."
+            }
+          ]
+        },
+        "message": "Products retrieved successfully"
+      }
     ```
 
 - Show
@@ -242,13 +248,19 @@ ___Table of Contents___
   - Response Body -- `Product object`
 
     ```json
-        {
-          id: 1,
-          name: 'product name',
-          description: 'product description',
-          price: 10.2,
-          category: 'electronics',
-        }
+      {
+        "status": "success",
+        "data": {
+          "product": {
+            "id": 1,
+            "name": "product name",
+            "description": "product description",
+            "price": 9.99,
+            "category": "Electronics."
+          }
+        },
+        "message": "Product retrieved successfully"
+      }
     ```
 
 - Create **`token required`**
@@ -258,23 +270,27 @@ ___Table of Contents___
 
     ```json
       {
-          name: 'product name',
-          description: 'product description',
-          price: 10.2,
-          category: 'electronics',
+        "name": "product name",
+        "description": "product description",
+        "price": 9.99,
+        "category": "Electronics."
       }
     ```
 
   - Response Body -- `User object`
 
     ```json
-        {
-          id: 1,
-          name: 'product name',
-          description: 'product description',
-          price: 10.2,
-          category: 'electronics',
-        }
+      {
+        "status": "success",
+        "data": {
+          "id": 1,
+          "name": "product name",
+          "description": "product description",
+          "price": 9.99,
+          "category": "Electronics."
+        },
+        "message": "Product created successfully"
+      }
     ```
 
 - Delete **`token required`**
@@ -289,13 +305,19 @@ ___Table of Contents___
   - Response Body -- `Deleted Product object`
 
     ```json
-        {
-          id: 1,
-          name: 'product name',
-          description: 'product description',
-          price: 10.2,
-          category: 'electronics',
-        }
+      {
+        "status": "success",
+        "data": {
+          "product": {
+            "id": 3,
+            "name": "product name",
+            "description": "product description",
+            "price": 9.99,
+            "category": "Electronics."
+          }
+        },
+        "message": "Product deleted successfully"
+      }
     ```
 
 - Edit **`token required`**
@@ -305,21 +327,30 @@ ___Table of Contents___
 
     ```json
       {
-          name: 'product name updated',
-          price: 12,
+        "id": 1,
+        "name": "product name",
+        "description": "product description",
+        "price": 20,
+        "category": "Electronics."
       }
     ```
 
   - Response Body -- `Updated User object`
 
     ```json
-        {
-          id: 1,
-          name: 'product name updated',
-          description: 'product description',
-          price: 12,
-          category: 'electronics'
-        }
+      {
+        "status": "success",
+        "data": {
+          "product": {
+            "id": 1,
+            "name": "product name",
+            "description": "product description",
+            "price": 20,
+            "category": "Electronics."
+          }
+        },
+        "message": "Product updated successfully"
+      }
     ```
 
 - **[OPTIONAL]** Top 5 most popular products
@@ -339,21 +370,30 @@ ___Table of Contents___
   - Response Body -- `Array of order objects, including an array of products added to the order and the associated user`
 
     ```json
-      [
         {
-          id: 1,
-          user_id: 'mohammed elzanaty',
-          products: [
+          "status": "success",
+          "data": {
+            "orders": [
               {
-                name: 'product name',
-                price: 12,
-                quantity: 1,
-                product_id: 1
+                "id": 1,
+                "status": "active",
+                "userId": 1,
+                "userName": "mohammedelzanaty",
+                "products": [
+                  {
+                    "name": "product name",
+                    "price": 20,
+                    "category": "Electronics.",
+                    "quantity": 1,
+                    "productId": 1,
+                    "description": "product description"
+                  }
+                ]
               }
-            ],
-          status: 'active',
+            ]
+          },
+          "message": "Orders retrieved successfully"
         }
-      ]
     ```
 
 - Show - **`token required`**
@@ -368,19 +408,19 @@ ___Table of Contents___
   - Response Body -- `Order object`
 
     ```json
-        {
-          id: 1,
-          user_id: 1,
-          products: [
-              {
-                name: 'product name',
-                price: 12,
-                quantity: 1,
-                product_id: 1
-              }
-            ],
-          status: 'active',
-        }
+      {
+        "status": "success",
+        "data": {
+          "order": {
+            "id": 1,
+            "status": "active",
+            "userId": 1,
+            "userName": "mohammedelzanaty",
+            "products": []
+          }
+        },
+        "message": "Order retrieved successfully"
+      }
     ```
 
 - Create **`token required`**
@@ -390,34 +430,23 @@ ___Table of Contents___
 
     ```json
       {
-          userId: 1,
-          products: [
-              {
-                name: 'product name',
-                price: 12,
-                quantity: 1,
-              }
-            ],
-          status: 'active',
+        "userId": 1,
+        "status": "active"
       }
     ```
 
   - Response Body -- `User object`
 
     ```json
-        {
-          id: 1,
-          userId: 1,
-          products: [
-              {
-                name: 'product name',
-                price: 12,
-                quantity: 1,
-                product_id: 1
-              }
-            ],
-          status: 'active',
-        }
+      {
+        "status": "success",
+        "data": {
+          "id": 1,
+          "status": "active",
+          "userId": 1
+        },
+        "message": "Order created successfully"
+      }
     ```
 
 - Delete **`token required`**
@@ -432,11 +461,17 @@ ___Table of Contents___
   - Response Body -- `Deleted Order object`
 
     ```json
-        {
-          id: 1,
-          user_id: 1,
-          status: 'active'
-        }
+      {
+        "status": "success",
+        "data": {
+          "order": {
+            "id": 1,
+            "status": "active",
+            "user_id": 1
+          }
+        },
+        "message": "Order deleted successfully"
+      }
     ```
 
 - Edit **`token required`**
@@ -446,19 +481,26 @@ ___Table of Contents___
 
     ```json
       {
-          userId: 1,
-          status: 'active',
+        "id": 1,
+        "userId": 1,
+        "status": "active"
       }
     ```
 
   - Response Body -- `Updated User object`
 
     ```json
-        {
-          id: 1,
-          userId: 1,
-          status: 'active'
-        }
+      {
+        "status": "success",
+        "data": {
+          "order": {
+            "id": 1,
+            "status": "active",
+            "userId": 1
+          }
+        },
+        "message": "Order updated successfully"
+      }
     ```
 
 - [OPTIONAL] Completed Orders by user [args: user id](token required)
@@ -467,7 +509,7 @@ ___Table of Contents___
 
 - Index - **`token required`**
   - HTTP verb `GET`
-  - Endpoint:- `/api/orders/:order_id/products/` - **id of the order**
+  - Endpoint:- `/api/order-products/:order_id/products` - **id of the order**
   - Request Body
 
     ```json
@@ -477,24 +519,34 @@ ___Table of Contents___
   - Response Body -- `An array of the products associated with an order`
 
     ```json
-      [
-        {
-          id: 1,
-          products: [
-              {
-                name: 'product name',
-                price: 12,
-                quantity: 1,
-                product_id: 1
-              }
-            ],
-        }
-      ]
+      {
+        "status": "success",
+        "data": {
+          "orderProducts": [
+            {
+              "id": 1,
+              "orderId": 1,
+              "productId": 1,
+              "products": [
+                {
+                  "name": "product name",
+                  "price": 20,
+                  "category": "Electronics.",
+                  "quantity": 1,
+                  "productId": 1,
+                  "description": "product description"
+                }
+              ]
+            }
+          ]
+        },
+        "message": "Order Products retrieved successfully"
+      }
     ```
 
 - Show - **`token required`**
   - HTTP verb `GET`
-  - Endpoint:- `/api/orders/:order_id/products/:product_id` - **id of the order abd id of the product to return**
+  - Endpoint:- `/api/order-products/:order_id/products/:product_id` - **id of the order abd id of the product to return**
   - Request Body
 
     ```json
@@ -504,22 +556,84 @@ ___Table of Contents___
   - Response Body -- `An array of the products associated with an order`
 
     ```json
-      [
-        {
-          id: 1,
-          product: {
-            name: 'product name',
-            price: 12,
-            quantity: 1,
-            product_id: 1
+      {
+        "status": "success",
+        "data": {
+          "orderProduct": {
+            "id": 1,
+            "orderId": 1,
+            "productId": 1,
+            "quantity": 1,
+            "name": "product name",
+            "description": "product description",
+            "category": "Electronics.",
+            "price": 20
           }
-        }
-      ]
+        },
+        "message": "Product at target Order retrieved successfully"
+      }
     ```
 
 - Edit - **`token required`**
+  - HTTP verb `PATCH`
+  - Endpoint:- `/api/order-products/:order_id/products/:product_id` - **id of the order abd id of the product to return**
+  - Request Body
+
+    ```json
+      {
+        "id": 1,
+        "orderId": 1,
+        "productId": 1,
+        "quantity": 4
+      }
+    ```
+
+  - Response Body -- `An array of the products associated with an order`
+
+    ```json
+      {
+        "status": "success",
+        "data": {
+          "orderProduct": {
+            "id": 1,
+            "quantity": 4,
+            "orderId": 1,
+            "productId": 1
+          }
+        },
+        "message": "order Product updated successfully"
+      }
+    ```
 
 - Delete - **`token required`**
+  - HTTP verb `DELETE`
+  - Endpoint:- `/api/order-products/:order_id/products/:product_id` - **id of the order abd id of the product to return**
+  - Request Body
+
+    ```json
+      {
+        "orderId": 1,
+        "productId": 1
+      }
+    ```
+
+  - Response Body -- `An array of the products associated with an order`
+
+    ```json
+      {
+        "status": "success",
+        "data": {
+          "orderProduct": {
+            "id": 1,
+            "quantity": 1,
+            "orderId": 1,
+            "productId": 1,
+            "products": []
+          }
+        },
+        "message": "Order Product deleted successfully"
+      }
+    ```
 
 ## Data Schema
 
@@ -571,18 +685,6 @@ CREATE TABLE order_products(
 
 ## Data Shapes
 
-### Product
-
-```typescript
-type Product = {
-  id?: number;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-};
-```
-
 ### User
 
 ```typescript
@@ -596,6 +698,18 @@ type User = {
 }
 ```
 
+### Product
+
+```typescript
+type Product = {
+  id?: number;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+};
+```
+
 ### Order
 
 ```typescript
@@ -603,11 +717,12 @@ type Order = {
   id?: number;
   // status of order (active or complete)
   status: string; 
-  user_id: string;
+  userId: string;
+  userName?: string;
   // quantity of each product in the order 
   // id of each product in the order
-  // => [{ product_id: number, quantity: number }]
-  products: OrderProduct[]; 
+  // => [{ product_id: number, quantity: number, etc.. }]
+  products?: OrderProduct[]; 
 }
 ```
 
@@ -617,7 +732,8 @@ type Order = {
 type OrderProduct = {
   id?: number;
   quantity: number;
-  order_id: number;
-  product_id: number;
+  orderId: number;
+  productId: number;
+  products?: Product[];
 };
 ```

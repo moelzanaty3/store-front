@@ -2,6 +2,7 @@
 /* eslint-disable camelcase */
 import db from '../database';
 import OrderProduct from '../types/order-product.type';
+import Product from '../types/product.type';
 
 class OrderProductModel {
   private formatOrderProduct(oP: {
@@ -9,12 +10,17 @@ class OrderProductModel {
     quantity: number;
     order_id: string;
     product_id: string;
+    products: Product[];
   }): OrderProduct {
     return {
       id: oP.id,
       quantity: oP.quantity,
-      order_id: +oP.order_id,
-      product_id: +oP.product_id
+      orderId: +oP.order_id,
+      productId: +oP.product_id,
+      products:
+        Array.isArray(oP.products) && oP.products.length > 0 && oP.products[0].name
+          ? oP.products
+          : []
     };
   }
 
@@ -24,14 +30,14 @@ class OrderProductModel {
       const sql =
         'INSERT INTO order_products (quantity, order_id, product_id) values ($1, $2, $3) RETURNING *';
 
-      const result = await connection.query(sql, [oP.quantity, oP.order_id, oP.product_id]);
+      const result = await connection.query(sql, [oP.quantity, oP.orderId, oP.productId]);
 
       connection.release();
 
       return this.formatOrderProduct(result.rows[0]);
     } catch (err) {
       throw new Error(
-        `Could not create product: ${oP.product_id} to order: ${oP.order_id}: ${err.message}`
+        `Could not create product: ${oP.productId} to order: ${oP.orderId}: ${err.message}`
       );
     }
   }
@@ -40,10 +46,10 @@ class OrderProductModel {
     try {
       const connection = await db.connect();
       const sql =
-        "SELECT o.id AS id, JSON_AGG(JSONB_BUILD_OBJECT('product_id', p.id, 'name', p.name, 'description', p.description,'category', p.category, 'price', p.price, 'quantity', op.quantity ) ) AS products FROM orders AS o LEFT JOIN order_products AS op ON o.id = op.order_id LEFT JOIN products AS p ON op.product_id = p.id WHERE o.id=$1 GROUP BY o.id";
+        "SELECT o.id AS id, op.order_id, op.product_id, JSON_AGG(JSONB_BUILD_OBJECT('productId', p.id, 'name', p.name, 'description', p.description,'category', p.category, 'price', p.price, 'quantity', op.quantity)) AS products FROM orders AS o LEFT JOIN order_products AS op ON o.id = op.order_id LEFT JOIN products AS p ON op.product_id = p.id WHERE o.id=$1 GROUP BY o.id, op.order_id, op.product_id";
       const result = await connection.query(sql, [orderId]);
       connection.release();
-      return result.rows;
+      return result.rows.map((o) => this.formatOrderProduct(o));
     } catch (err) {
       throw new Error(`Error at retrieving products in order: ${orderId} ${err.message}`);
     }
@@ -53,7 +59,7 @@ class OrderProductModel {
     try {
       const connection = await db.connect();
       const sql =
-        'SELECT op.order_id AS id, op.quantity, p.name, p.description, p.price AS price FROM order_products AS op JOIN products AS p ON p.id=op.product_id WHERE order_id=$1 AND product_id=$2';
+        'SELECT op.order_id::INTEGER AS id, op.order_id::INTEGER AS "orderId", op.product_id::INTEGER AS "productId", op.quantity, p.name, p.description, p.category, p.price::INTEGER FROM order_products AS op JOIN products AS p ON p.id=op.product_id WHERE order_id=$1 AND product_id=$2';
       const result = await connection.query(sql, [orderId, productId]);
       connection.release();
       return result.rows[0];
@@ -69,12 +75,12 @@ class OrderProductModel {
       const connection = await db.connect();
       const sql =
         'UPDATE order_products SET quantity=$1, order_id=$2,  product_id=$3 WHERE id=$4 RETURNING *';
-      const result = await connection.query(sql, [oP.quantity, oP.order_id, oP.product_id, oP.id]);
+      const result = await connection.query(sql, [oP.quantity, oP.orderId, oP.productId, oP.id]);
       connection.release();
       return this.formatOrderProduct(result.rows[0]);
     } catch (err) {
       throw new Error(
-        `Could not update product: ${oP.product_id} in order ${oP.order_id}. Error: ${err}`
+        `Could not update product: ${oP.productId} in order ${oP.orderId}. Error: ${err}`
       );
     }
   }

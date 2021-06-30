@@ -1,10 +1,13 @@
 /* eslint-disable camelcase */
 
+import Product from './product.type';
+
 type OrderProduct = {
   id?: number;
   quantity: number;
-  order_id: number;
-  product_id: number;
+  orderId: number;
+  productId: number;
+  products?: Product[];
 };
 
 export default OrderProduct;

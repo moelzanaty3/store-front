@@ -55,8 +55,8 @@ describe('Order Product Model', () => {
 
     const orderProduct = {
       quantity: 1,
-      order_id: 1,
-      product_id: 1
+      orderId: 1,
+      productId: 1
     } as OrderProduct;
 
     beforeAll(async () => {
@@ -93,8 +93,8 @@ describe('Order Product Model', () => {
       const editOrderProduct = await orderProductModel.edit({
         id: 1,
         quantity: 10,
-        order_id: 1,
-        product_id: 1
+        orderId: 1,
+        productId: 1
       });
       expect(editOrderProduct.quantity).toEqual(10);
     });
