@@ -8,6 +8,6 @@ const routes = express.Router();
 
 routes.use('/users', usersRoutes);
 routes.use('/orders', authenticationMiddleware, ordersRoutes);
-routes.use('/product', authenticationMiddleware, productsRoutes);
+routes.use('/products', authenticationMiddleware, productsRoutes);
 
 export default routes;

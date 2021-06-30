@@ -1,44 +1,71 @@
-import { Request, Response, Router } from 'express';
-import jwt from 'jsonwebtoken';
-import config from '../../config';
-import UserModel from '../../models/user.model';
+import { NextFunction, Request, Response, Router } from 'express';
+import ProductModel from '../../models/product.model';
 
 const routes = Router();
-const userModel = new UserModel();
+const productModel = new ProductModel();
 
-routes.post('/', async (req: Request, res: Response) => {
+routes.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await userModel.create(req.body);
-    const token = jwt.sign({ user }, config.tokenSecret as string);
+    const product = await productModel.create(req.body);
     res.json({
       status: 'success',
-      token,
-      message: 'user created successfully'
+      data: { ...product },
+      message: 'Product created successfully'
     });
   } catch (err) {
-    throw new Error(`Error at create user, ${err}`);
+    next(err);
   }
 });
 
-routes.post('/authenticate', async (req: Request, res: Response) => {
+routes.get('/', async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    const { username, password } = req.body;
-
-    const user = await userModel.authenticate(username, password);
-    const token = jwt.sign({ user }, config.tokenSecret as string);
-    if (!user) {
-      return res.json({
-        status: 'success',
-        message: 'the username and password do not match please try again'
-      });
-    }
-    return res.json({
+    const products = await productModel.index();
+    res.json({
       status: 'success',
-      token,
-      message: 'user authenticated successfully'
+      data: { products },
+      message: 'Products retrieved successfully'
     });
   } catch (err) {
-    throw new Error(`Error at login user, ${err}`);
+    next(err);
+  }
+});
+
+routes.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const product = await productModel.show(+req.params.id);
+    res.json({
+      status: 'success',
+      data: { product },
+      message: 'Product retrieved successfully'
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+routes.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const product = await productModel.edit(req.body);
+    res.json({
+      status: 'success',
+      data: { product },
+      message: 'Product updated successfully'
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+routes.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const product = await productModel.delete(+req.params.id);
+    res.json({
+      status: 'success',
+      data: { product },
+      message: 'Product deleted successfully'
+    });
+  } catch (err) {
+    next(err);
   }
 });
 

@@ -3,6 +3,22 @@ import db from '../database';
 import Product from '../types/product.type';
 
 class ProductModel {
+  private formatProduct(product: {
+    id?: number | undefined;
+    name: string;
+    description: string;
+    price: string;
+    category: string;
+  }): Product {
+    return {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: +product.price,
+      category: product.category
+    };
+  }
+
   async create(p: Product): Promise<Product> {
     try {
       const connection = await db.connect();
@@ -13,7 +29,7 @@ class ProductModel {
 
       connection.release();
 
-      return result.rows[0];
+      return this.formatProduct(result.rows[0]);
     } catch (err) {
       throw new Error(`Could not create product ${err.message}`);
     }
@@ -25,7 +41,7 @@ class ProductModel {
       const sql = 'SELECT * FROM products';
       const result = await connection.query(sql);
       connection.release();
-      return result.rows;
+      return result.rows.map((p) => this.formatProduct(p));
     } catch (err) {
       throw new Error(`Error at retrieving products ${err.message}`);
     }
@@ -44,7 +60,7 @@ class ProductModel {
         p.id
       ]);
       connection.release();
-      return result.rows[0];
+      return this.formatProduct(result.rows[0]);
     } catch (err) {
       throw new Error(`Could not update product ${p.name}. Error: ${err}`);
     }
@@ -59,7 +75,7 @@ class ProductModel {
 
       connection.release();
 
-      return result.rows[0];
+      return this.formatProduct(result.rows[0]);
     } catch (err) {
       throw new Error(`Could not delete product ${id}. Error: ${err}`);
     }
@@ -74,7 +90,7 @@ class ProductModel {
       const result = await connection.query(sql, [id]);
 
       connection.release();
-      return result.rows[0];
+      return this.formatProduct(result.rows[0]);
     } catch (err) {
       throw new Error(`Could not find product ${id}. Error: ${err}`);
     }
