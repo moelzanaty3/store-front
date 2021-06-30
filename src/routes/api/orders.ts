@@ -1,44 +1,84 @@
-import { Request, Response, Router } from 'express';
-import jwt from 'jsonwebtoken';
-import config from '../../config';
-import UserModel from '../../models/user.model';
+import { NextFunction, Request, Response, Router } from 'express';
+import OrderModel from '../../models/order.model';
 
 const routes = Router();
-const userModel = new UserModel();
+const orderModel = new OrderModel();
 
-routes.post('/', async (req: Request, res: Response) => {
+routes.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await userModel.create(req.body);
-    const token = jwt.sign({ user }, config.tokenSecret as string);
+    const order = await orderModel.create(req.body);
     res.json({
       status: 'success',
-      token,
-      message: 'user created successfully'
+      data: { ...order },
+      message: 'Order created successfully'
     });
   } catch (err) {
-    throw new Error(`Error at create user, ${err}`);
+    next(err);
   }
 });
 
-routes.post('/authenticate', async (req: Request, res: Response) => {
+routes.get('/', async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    const { username, password } = req.body;
-
-    const user = await userModel.authenticate(username, password);
-    const token = jwt.sign({ user }, config.tokenSecret as string);
-    if (!user) {
-      return res.json({
-        status: 'success',
-        message: 'the username and password do not match please try again'
-      });
-    }
-    return res.json({
+    const orders = await orderModel.index();
+    res.json({
       status: 'success',
-      token,
-      message: 'user authenticated successfully'
+      data: { orders },
+      message: 'Orders retrieved successfully'
     });
   } catch (err) {
-    throw new Error(`Error at login user, ${err}`);
+    next(err);
+  }
+});
+
+routes.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const order = await orderModel.show(req.params.id as unknown as number);
+    res.json({
+      status: 'success',
+      data: { order },
+      message: 'Order retrieved successfully'
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+routes.get('/users/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const order = await orderModel.getOrderByUserId(req.params.id as unknown as number);
+    res.json({
+      status: 'success',
+      data: { order },
+      message: 'Order retrieved successfully'
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+routes.patch('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const order = await orderModel.edit(req.body);
+    res.json({
+      status: 'success',
+      data: { order },
+      message: 'Order updated successfully'
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+routes.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const order = await orderModel.delete(req.params.id as unknown as number);
+    res.json({
+      status: 'success',
+      data: { order },
+      message: 'Order deleted successfully'
+    });
+  } catch (err) {
+    next(err);
   }
 });
 

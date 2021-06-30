@@ -47,7 +47,7 @@ routes.get(
   authenticationMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await userModel.show(+req.params.id);
+      const user = await userModel.show(req.params.id as unknown as number);
       res.json({
         status: 'success',
         data: { user },
@@ -81,7 +81,7 @@ routes.delete(
   authenticationMiddleware,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await userModel.delete(+req.params.id);
+      const user = await userModel.delete(req.params.id as unknown as number);
       res.json({
         status: 'success',
         data: { user },

@@ -34,8 +34,8 @@ describe('Order Product Model', () => {
 
   describe('Test Order Products Model logic', () => {
     const user = {
-      email: 'test@example.com',
-      userName: 'testUserOrder',
+      email: 'test@test.com',
+      userName: 'testUser',
       firstName: 'Test',
       lastName: 'User',
       password: 'test123'
@@ -49,7 +49,7 @@ describe('Order Product Model', () => {
     } as Product;
 
     const order = {
-      user_id: 1,
+      userId: 1,
       status: 'active'
     } as Order;
 

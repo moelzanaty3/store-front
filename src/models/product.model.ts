@@ -62,7 +62,7 @@ class ProductModel {
       connection.release();
       return this.formatProduct(result.rows[0]);
     } catch (err) {
-      throw new Error(`Could not update product ${p.name}. Error: ${err}`);
+      throw new Error(`Could not update product ${p.name}, ${err.message}`);
     }
   }
 
@@ -77,7 +77,7 @@ class ProductModel {
 
       return this.formatProduct(result.rows[0]);
     } catch (err) {
-      throw new Error(`Could not delete product ${id}. Error: ${err}`);
+      throw new Error(`Could not delete product ${id}. ${err.message}`);
     }
   }
 
@@ -92,7 +92,7 @@ class ProductModel {
       connection.release();
       return this.formatProduct(result.rows[0]);
     } catch (err) {
-      throw new Error(`Could not find product ${id}. Error: ${err}`);
+      throw new Error(`Could not find product ${id}. ${err.message}`);
     }
   }
 }

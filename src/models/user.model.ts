@@ -72,7 +72,7 @@ class UserModel {
       connection.release();
       return this.formatUser(result.rows[0]);
     } catch (err) {
-      throw new Error(`Could not update user: ${u.userName}. Error: ${err}`);
+      throw new Error(`Could not update user: ${u.userName}, ${err.message}`);
     }
   }
 
@@ -87,7 +87,7 @@ class UserModel {
 
       return this.formatUser(result.rows[0]);
     } catch (err) {
-      throw new Error(`Could not delete user ${id}. Error: ${err}`);
+      throw new Error(`Could not delete user ${id}, ${err.message}`);
     }
   }
 
@@ -102,7 +102,7 @@ class UserModel {
       connection.release();
       return this.formatUser(result.rows[0]);
     } catch (err) {
-      throw new Error(`Could not find user ${id}. Error: ${err}`);
+      throw new Error(`Could not find user ${id}, ${err.message}`);
     }
   }
 

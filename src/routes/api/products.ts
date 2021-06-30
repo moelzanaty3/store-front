@@ -32,7 +32,7 @@ routes.get('/', async (_req: Request, res: Response, next: NextFunction) => {
 
 routes.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const product = await productModel.show(+req.params.id);
+    const product = await productModel.show(req.params.id as unknown as number);
     res.json({
       status: 'success',
       data: { product },
@@ -58,7 +58,7 @@ routes.patch('/:id', async (req: Request, res: Response, next: NextFunction) => 
 
 routes.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const product = await productModel.delete(+req.params.id);
+    const product = await productModel.delete(req.params.id as unknown as number);
     res.json({
       status: 'success',
       data: { product },

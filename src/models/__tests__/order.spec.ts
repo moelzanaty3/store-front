@@ -31,8 +31,8 @@ describe('Order Model', () => {
 
   describe('Test Model logic', () => {
     const user = {
-      email: 'test@example.com',
-      userName: 'testUserOrder',
+      email: 'test@test.com',
+      userName: 'testUser',
       firstName: 'Test',
       lastName: 'User',
       password: 'test123'
@@ -41,12 +41,12 @@ describe('Order Model', () => {
     const product = {
       name: 'product name',
       description: 'product description',
-      price: 9.99,
+      price: 20,
       category: 'Electronics.'
     } as Product;
 
     const order = {
-      user_id: 1,
+      userId: 1,
       status: 'active'
     } as Order;
 
@@ -82,7 +82,7 @@ describe('Order Model', () => {
     it('Edit method should return an order with edited attributes', async () => {
       const returnedOrder = await orderModel.edit({
         id: 1,
-        user_id: 1,
+        userId: 1,
         status: 'completed'
       });
       expect(returnedOrder.status).toBe('completed');
